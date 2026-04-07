@@ -219,7 +219,7 @@ $(function () {
   // ===== 修正 active card 的 grid 寬度 =====
   function fixGridWidth() {
     var $activeCard = $(".card-panel.stack-0");
-    var gridId = $activeCard.find("table").attr("id");
+    var gridId = "grid-" + $activeCard.attr("data-index");
     if (!gridId) return;
     var $grid = $("#" + gridId);
     if ($grid.length && $grid[0].grid) {
@@ -259,9 +259,7 @@ $(function () {
         var tabName = $card.attr("data-type");
         if (!loadedTabs[tabName]) return;
 
-        var $body = $card.find(".card-body");
-        var gridId = $body.find("table").attr("id");
-        if (!gridId) return;
+        var gridId = "grid-" + $card.attr("data-index");
         var $grid = $("#" + gridId);
         if (!$grid.length || !$grid[0].grid) return;
 
