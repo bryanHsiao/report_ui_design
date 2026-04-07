@@ -1,0 +1,239 @@
+/* ===== Report Tabs Component — 純 UI 外皮 ===== */
+
+/* ===== CSS Variables ===== */
+:root {
+  --rt-navy-800: #12233d;
+  --rt-navy-600: #234168;
+  --rt-slate-100: #e8ecf1;
+  --rt-white: #ffffff;
+  --rt-tab-law: #2563eb;
+  --rt-tab-interp: #0d9488;
+  --rt-tab-penalty: #d97706;
+  --rt-text-primary: #1e293b;
+  --rt-text-secondary: #64748b;
+  --rt-border-color: #e2e8f0;
+  --rt-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --rt-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --rt-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.15);
+  --rt-radius: 6px;
+}
+
+/* ===== Layout ===== */
+.report-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: "Microsoft JhengHei", "Noto Sans TC", "Segoe UI", sans-serif;
+  color: var(--rt-text-primary);
+}
+
+/* ===== Header ===== */
+.report-header {
+  background: linear-gradient(135deg, var(--rt-navy-800), var(--rt-navy-600));
+  padding: 20px 28px;
+  flex-shrink: 0;
+}
+
+.report-header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--rt-white);
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+/* ===== Tab Bar ===== */
+.report-tab-bar {
+  display: flex;
+  gap: 6px;
+  background: var(--rt-white);
+  padding: 6px 16px 0;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--rt-border-color);
+}
+
+.report-tab-btn {
+  position: relative;
+  padding: 6px 20px;
+  border: 1px solid var(--rt-border-color);
+  border-bottom: none;
+  background: #f8fafc;
+  color: var(--rt-text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border-radius: var(--rt-radius) var(--rt-radius) 0 0;
+  white-space: nowrap;
+  margin-bottom: -1px;
+}
+
+.report-tab-btn:hover {
+  background: var(--rt-white);
+  color: var(--rt-text-primary);
+}
+
+.report-tab-btn.active {
+  background: var(--rt-white);
+  border-color: var(--rt-border-color);
+  border-bottom-color: var(--rt-white);
+  color: var(--rt-text-primary);
+  font-weight: 600;
+}
+
+/* 頂部色條 */
+.report-tab-btn::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 3px;
+  border-radius: var(--rt-radius) var(--rt-radius) 0 0;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.report-tab-btn.active::before {
+  opacity: 1;
+}
+
+.report-tab-btn[data-type="法規資料"]::before { background: var(--rt-tab-law); }
+.report-tab-btn[data-type="函釋資料"]::before { background: var(--rt-tab-interp); }
+.report-tab-btn[data-type="裁罰案件"]::before { background: var(--rt-tab-penalty); }
+
+/* ===== Cards Area ===== */
+.report-cards-area {
+  padding: 4px 12px 0 12px;
+  flex: 1;
+  min-height: 0;
+  overflow: visible;
+}
+
+.report-cards-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== Card Panel ===== */
+.report-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  background: var(--rt-white);
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.45s ease;
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 卡片邊框顏色 */
+.report-card[data-type="法規資料"] { border-color: var(--rt-tab-law); }
+.report-card[data-type="函釋資料"] { border-color: var(--rt-tab-interp); }
+.report-card[data-type="裁罰案件"] { border-color: var(--rt-tab-penalty); }
+
+/* 卡片頂部色條 */
+.report-card::before {
+  content: "";
+  display: block;
+  height: 4px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.report-card[data-type="法規資料"]::before { background: var(--rt-tab-law); }
+.report-card[data-type="函釋資料"]::before { background: var(--rt-tab-interp); }
+.report-card[data-type="裁罰案件"]::before { background: var(--rt-tab-penalty); }
+
+/* 卡片內容區 */
+.report-card-body {
+  padding: 8px 12px 12px;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ===== Card Stack Positions ===== */
+.report-card.stack-0 {
+  z-index: 30;
+  transform: translateX(0) translateY(0);
+  box-shadow: var(--rt-shadow-lg);
+}
+
+.report-card.stack-1 {
+  z-index: 20;
+  transform: translateX(10px) translateY(10px);
+  box-shadow: var(--rt-shadow-md);
+  pointer-events: none;
+}
+
+.report-card.stack-2 {
+  z-index: 10;
+  transform: translateX(20px) translateY(20px);
+  box-shadow: var(--rt-shadow-sm);
+  pointer-events: none;
+}
+
+.report-card.stack-hidden {
+  z-index: 5;
+  transform: translateX(24px) translateY(24px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 非 active 卡片隱藏內容 */
+.report-card.stack-1 .report-card-body,
+.report-card.stack-1 .report-card-loading,
+.report-card.stack-2 .report-card-body,
+.report-card.stack-2 .report-card-loading,
+.report-card.stack-hidden .report-card-body,
+.report-card.stack-hidden .report-card-loading {
+  visibility: hidden;
+}
+
+/* ===== Loading Overlay ===== */
+.report-card-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 200px;
+  gap: 16px;
+}
+
+.report-card-loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--rt-border-color);
+  border-top-color: var(--rt-tab-law);
+  border-radius: 50%;
+  animation: rt-spin 0.8s linear infinite;
+}
+
+.report-card-loading .loading-text {
+  color: var(--rt-text-secondary);
+  font-size: 14px;
+}
+
+@keyframes rt-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Card body fade-in */
+.report-card-body.fade-in {
+  animation: rt-fadeIn 0.3s ease forwards;
+}
+
+@keyframes rt-fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

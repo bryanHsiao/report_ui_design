@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Tabs Component — Preview</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="css/report-tabs.css">
+  <style>
+    /* 預覽用：模擬 grid 的簡易表格樣式 */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+
+    .demo-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .demo-table th {
+      background: #f8fafc;
+      border: 1px solid var(--rt-border-color);
+      padding: 10px 8px;
+      font-weight: 600;
+      color: var(--rt-text-primary);
+      position: sticky;
+      top: 0;
+    }
+    .demo-table td {
+      border: 1px solid var(--rt-border-color);
+      padding: 8px;
+      white-space: normal;
+      word-break: break-all;
+    }
+    .demo-table tr:hover td {
+      background: #f0f7ff;
+    }
+    .demo-pager {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 8px;
+      background: #f8fafc;
+      border: 1px solid var(--rt-border-color);
+      border-top: none;
+      font-size: 13px;
+      color: var(--rt-text-secondary);
+    }
+    .report-card-body {
+      overflow-y: auto !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    <header class="report-header">
+      <h1>外部法規查詢結果</h1>
+    </header>
+    <nav id="tab-bar" class="report-tab-bar"></nav>
+    <main class="report-cards-area">
+      <div id="cards-stack" class="report-cards-stack"></div>
+    </main>
+  </div>
+
+  <script src="js/report-tabs.js"></script>
+  <script>
+    // ===== 預覽用假資料 =====
+    var DEMO_DATA = {
+      "法規資料": [
+        ["洗錢防制法", "2025/05/01", "法務部檢察司"],
+        ["資恐防制法施行細則", "2024/08/15", "法務部檢察司"],
+        ["金融機構防制洗錢辦法", "2024/06/20", "金融監督管理委員會銀行局"],
+        ["銀行業防制洗錢及打擊資恐內部控制要點", "2024/03/12", "金融監督管理委員會銀行局"],
+        ["證券商管理規則部分條文修正草案", "2025/12/18", "金融監督管理委員會證券期貨局"],
+        ["保險業防制洗錢及打擊資恐注意事項", "2025/10/15", "金融監督管理委員會保險局"],
+        ["虛擬資產服務提供者防制洗錢辦法", "2025/09/12", "金融監督管理委員會"],
+        ["金融機構客戶身分確認及交易紀錄保存管理辦法", "2025/03/20", "法務部檢察司"]
+      ],
+      "函釋資料": [
+        ["有關洗錢防制法第六條第三項授權訂定辦法之適用疑義函釋", "2026/02/18", "法務部"],
+        ["金融機構對達一定金額以上通貨交易申報相關疑義函釋", "2025/11/05", "金融監督管理委員會銀行局"],
+        ["有關保險業防制洗錢及打擊資恐注意事項適用疑義函釋", "2025/08/22", "金融監督管理委員會保險局"],
+        ["證券商對疑似洗錢交易申報作業之補充函釋", "2025/05/14", "金融監督管理委員會證券期貨局"]
+      ],
+      "裁罰案件": [
+        ["三商美邦人壽保險股份有限公司違反洗錢防制法處分案", "2019/12/11", "金融監督管理委員會保險局"],
+        ["遠雄人壽保險事業股份有限公司違反保險法及洗錢防制法處分案", "2019/10/24", "金融監督管理委員會保險局"],
+        ["合作金庫商業銀行違反洗錢防制法處分案", "2019/10/17", "金融監督管理委員會銀行局"]
+      ]
+    };
+
+    function buildDemoTable(tabName, containerId, pagerId) {
+      var rows = DEMO_DATA[tabName] || [];
+      var html = '<table class="demo-table">';
+      html += '<thead><tr><th>法規名稱</th><th>最後修正日期</th><th>主管機關</th><th>相關聯內規</th></tr></thead>';
+      html += '<tbody>';
+      rows.forEach(function (row) {
+        html += '<tr><td>' + row[0] + '</td><td style="text-align:center">' + row[1] + '</td><td style="text-align:center">' + row[2] + '</td><td style="text-align:center">-</td></tr>';
+      });
+      html += '</tbody></table>';
+      $("#" + containerId).html(html);
+      $("#" + pagerId).html('<div class="demo-pager">共 1 頁 &nbsp; 1 - ' + rows.length + ' 共 ' + rows.length + ' 條</div>');
+    }
+
+    // ===== 初始化 =====
+    ReportTabs.init({
+      tabBarEl: "#tab-bar",
+      stackEl: "#cards-stack",
+      tabs: ["法規資料", "函釋資料", "裁罰案件"],
+      onTabSwitch: function (tabName, $card, gridId, pagerId) {
+        // 模擬 API 延遲
+        setTimeout(function () {
+          buildDemoTable(tabName, gridId, pagerId);
+          ReportTabs.markLoaded(tabName);
+        }, 600);
+      }
+    });
+  </script>
+</body>
+</html>
