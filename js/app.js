@@ -247,8 +247,30 @@ $(function () {
     }
   }
 
-  // ===== 視窗大小調整 =====
-  $(window).on("resize", fixGridWidth);
+  // ===== 視窗大小調整 — 所有已載入的 grid 都重算 =====
+  var resizeTimer;
+  $(window).on("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      $(".card-panel").each(function () {
+        var $card = $(this);
+        var tabName = $card.attr("data-type");
+        if (!loadedTabs[tabName]) return;
+
+        var $body = $card.find(".card-body");
+        var gridId = $body.find("table").attr("id");
+        if (!gridId) return;
+        var $grid = $("#" + gridId);
+        if (!$grid.length || !$grid[0].grid) return;
+
+        var w = $body.innerWidth() - 24;
+        if (w > 0) {
+          $grid.jqGrid("setGridWidth", w, true);
+        }
+        fitGridHeight(gridId, $card);
+      });
+    }, 150);
+  });
 
   // ===== 初始化 =====
   var tabs = getTabsFromURL();
