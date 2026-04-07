@@ -105,12 +105,10 @@ $(function () {
     setTimeout(function () {
       var data = MOCK_DATA[tabName] || [];
 
-      var initWidth = $card.find(".card-body").innerWidth() - 24;
       $("#" + gridId).jqGrid({
         datatype: "local",
         data: data,
         colModel: colModel,
-        width: initWidth > 0 ? initWidth : undefined,
         shrinkToFit: true,
         height: "auto",
         rowNum: 20,
@@ -137,10 +135,9 @@ $(function () {
 
       // 等 DOM 完全渲染後調整尺寸
       setTimeout(function () {
-        var $body = $card.find(".card-body");
-        var bodyWidth = $body.innerWidth();
-        if (bodyWidth > 0) {
-          $("#" + gridId).jqGrid("setGridWidth", bodyWidth - 24, true);
+        var w = getGridWidth($card);
+        if (w > 0) {
+          $("#" + gridId).jqGrid("setGridWidth", w, true);
         }
         fitGridHeight(gridId, $card);
         if (callback) callback();
@@ -213,16 +210,21 @@ $(function () {
     }
   });
 
+  // ===== 計算 grid 可用寬度（用卡片寬度扣除 padding + border） =====
+  function getGridWidth($card) {
+    // card 寬度 - border(2*2) - body padding(12*2) = card.clientWidth - 24
+    return $card[0].clientWidth - 28;
+  }
+
   // ===== 修正 active card 的 grid 寬度 =====
   function fixGridWidth() {
     var $activeCard = $(".card-panel.stack-0");
-    var $body = $activeCard.find(".card-body");
-    var gridId = $body.find("table").attr("id");
+    var gridId = $activeCard.find("table").attr("id");
     if (!gridId) return;
     var $grid = $("#" + gridId);
     if ($grid.length && $grid[0].grid) {
-      var w = $body.innerWidth() - 24;
-      $grid.jqGrid("setGridWidth", w, true);
+      var w = getGridWidth($activeCard);
+      if (w > 0) $grid.jqGrid("setGridWidth", w, true);
       fitGridHeight(gridId, $activeCard);
     }
   }
@@ -263,7 +265,7 @@ $(function () {
         var $grid = $("#" + gridId);
         if (!$grid.length || !$grid[0].grid) return;
 
-        var w = $body.innerWidth() - 24;
+        var w = getGridWidth($card);
         if (w > 0) {
           $grid.jqGrid("setGridWidth", w, true);
         }
