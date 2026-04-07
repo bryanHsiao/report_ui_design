@@ -305,6 +305,13 @@ body {
   border-color: var(--border-color) !important;
   font-size: 13px;
   padding: 8px;
+  white-space: normal !important;
+  word-break: break-all;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th div {
+  white-space: normal !important;
+  word-break: keep-all;
 }
 
 .ui-jqgrid tr.jqgrow:hover td {
