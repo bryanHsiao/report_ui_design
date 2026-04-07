@@ -63,16 +63,16 @@ body {
 /* ===== Tab Bar ===== */
 .tab-bar {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   background: var(--white);
-  padding: 10px 16px 0;
+  padding: 6px 16px 0;
   flex-shrink: 0;
   border-bottom: 1px solid var(--border-color);
 }
 
 .tab-btn {
   position: relative;
-  padding: 10px 24px;
+  padding: 6px 20px;
   border: 1px solid var(--border-color);
   border-bottom: none;
   background: #f8fafc;
@@ -310,4 +310,65 @@ body {
 .ui-jqgrid .ui-jqgrid-pager {
   background: #f8fafc !important;
   border-color: var(--border-color) !important;
+  height: auto !important;
+  min-height: 34px;
+  overflow: visible !important;
+  padding: 4px 8px !important;
+}
+
+/* 翻頁按鈕 — 用文字替代缺失的圖標 */
+.ui-jqgrid .ui-pg-button {
+  cursor: pointer;
+  padding: 4px 8px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.ui-jqgrid .ui-pg-button:not(.ui-state-disabled):hover {
+  background: var(--border-color);
+}
+
+.ui-jqgrid .ui-pg-button .ui-icon {
+  text-indent: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  background: none !important;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text-secondary);
+  position: static !important;
+}
+
+.ui-jqgrid .ui-pg-button:not(.ui-state-disabled) .ui-icon {
+  color: var(--text-primary);
+}
+
+/* 用文字符號取代 sprite 圖標 */
+.ui-icon-seek-first::before { content: "\ab"; }
+.ui-icon-seek-prev::before { content: "\2039"; }
+.ui-icon-seek-next::before { content: "\203a"; }
+.ui-icon-seek-end::before { content: "\bb"; }
+
+.ui-jqgrid .ui-pg-input {
+  height: 24px;
+  font-size: 13px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  margin: 0 4px;
+  width: 36px;
+}
+
+.ui-jqgrid .ui-paging-info {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.ui-jqgrid .ui-state-disabled .ui-icon {
+  opacity: 0.3;
 }
