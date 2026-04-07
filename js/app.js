@@ -105,11 +105,12 @@ $(function () {
     setTimeout(function () {
       var data = MOCK_DATA[tabName] || [];
 
+      var initWidth = $card.find(".card-body").innerWidth() - 24;
       $("#" + gridId).jqGrid({
         datatype: "local",
         data: data,
         colModel: colModel,
-        autowidth: true,
+        width: initWidth > 0 ? initWidth : undefined,
         shrinkToFit: true,
         height: "auto",
         rowNum: 20,

@@ -288,6 +288,10 @@ body {
   overflow: hidden;
 }
 
+.ui-jqgrid .ui-jqgrid-bdiv {
+  overflow-x: hidden !important;
+}
+
 .ui-jqgrid .ui-jqgrid-htable th {
   background: #f8fafc !important;
   border-color: var(--border-color) !important;
