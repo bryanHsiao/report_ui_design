@@ -1,0 +1,313 @@
+/* ===== CSS Variables ===== */
+:root {
+  --navy-900: #0a1628;
+  --navy-800: #12233d;
+  --navy-700: #1a3152;
+  --navy-600: #234168;
+  --slate-100: #e8ecf1;
+  --slate-200: #d1d9e4;
+  --slate-300: #b0bdd0;
+  --white: #ffffff;
+  --accent-blue: #3b82f6;
+  --accent-hover: #2563eb;
+  --tab-law: #2563eb;
+  --tab-interp: #0d9488;
+  --tab-penalty: #d97706;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.15);
+  --radius: 6px;
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Microsoft JhengHei", "Noto Sans TC", "Segoe UI", sans-serif;
+  background: var(--slate-100);
+  color: var(--text-primary);
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== Layout ===== */
+.app-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Header ===== */
+.app-header {
+  background: linear-gradient(135deg, var(--navy-800), var(--navy-600));
+  padding: 20px 28px;
+  flex-shrink: 0;
+}
+
+.app-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 1px;
+}
+
+/* ===== Tab Bar ===== */
+.tab-bar {
+  display: flex;
+  gap: 8px;
+  background: var(--white);
+  padding: 10px 16px 0;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+  position: relative;
+  padding: 10px 24px;
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+  background: #f8fafc;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border-radius: var(--radius) var(--radius) 0 0;
+  white-space: nowrap;
+  margin-bottom: -1px;
+}
+
+.tab-btn:hover {
+  background: var(--white);
+  color: var(--text-primary);
+}
+
+/* Active tab — 突出的標籤頁效果 */
+.tab-btn.active {
+  background: var(--white);
+  border-color: var(--border-color);
+  border-bottom-color: var(--white);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* 頂部色條 */
+.tab-btn::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 3px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.tab-btn.active::before {
+  opacity: 1;
+}
+
+.tab-btn[data-type="法規資料"]::before { background: var(--tab-law); }
+.tab-btn[data-type="函釋資料"]::before { background: var(--tab-interp); }
+.tab-btn[data-type="裁罰案件"]::before { background: var(--tab-penalty); }
+
+/* Loading dot animation on tab */
+.tab-btn .loading-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  border-radius: 50%;
+  margin-left: 8px;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ===== Grid Container ===== */
+.grid-container {
+  padding: 4px 12px 0 12px;
+  flex: 1;
+  min-height: 0;
+  overflow: visible;
+}
+
+/* ===== Cards Stack ===== */
+.cards-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== Card Panel ===== */
+.card-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* 留右側和底部給偏移卡片露邊框 */
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  background: var(--white);
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.45s ease;
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Color border for each card type */
+.card-panel[data-type="法規資料"] { border-color: var(--tab-law); }
+.card-panel[data-type="函釋資料"] { border-color: var(--tab-interp); }
+.card-panel[data-type="裁罰案件"] { border-color: var(--tab-penalty); }
+
+/* Color accent bar on top of each card */
+.card-panel::before {
+  content: "";
+  display: block;
+  height: 4px;
+  width: 100%;
+}
+
+.card-panel[data-type="法規資料"]::before { background: var(--tab-law); }
+.card-panel[data-type="函釋資料"]::before { background: var(--tab-interp); }
+.card-panel[data-type="裁罰案件"]::before { background: var(--tab-penalty); }
+
+.card-panel .card-body {
+  padding: 8px 12px 12px;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.card-panel .card-loading {
+  flex: 1;
+}
+
+/* ===== Card Stack Positions (圖2風格：同尺寸，右下偏移露邊框) ===== */
+
+/* Active card — 最前面 */
+.card-panel.stack-0 {
+  z-index: 30;
+  transform: translateX(0) translateY(0);
+  box-shadow: var(--shadow-lg);
+}
+
+/* 第1張後方卡片 — 右下偏移 */
+.card-panel.stack-1 {
+  z-index: 20;
+  transform: translateX(10px) translateY(10px);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+}
+
+/* 第2張後方卡片 — 更多偏移 */
+.card-panel.stack-2 {
+  z-index: 10;
+  transform: translateX(20px) translateY(20px);
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+}
+
+/* 3rd+ behind (fallback) */
+.card-panel.stack-hidden {
+  z-index: 5;
+  transform: translateX(24px) translateY(24px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hide card body content for non-active cards */
+.card-panel.stack-1 .card-body,
+.card-panel.stack-1 .card-loading,
+.card-panel.stack-2 .card-body,
+.card-panel.stack-2 .card-loading,
+.card-panel.stack-hidden .card-body,
+.card-panel.stack-hidden .card-loading {
+  visibility: hidden;
+}
+
+
+/* ===== Loading Overlay ===== */
+.card-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 350px;
+  gap: 16px;
+}
+
+.card-loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-blue);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.card-loading .loading-text {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Card body fade-in after loading */
+.card-body.fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== jqGrid Overrides ===== */
+.ui-jqgrid {
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th {
+  background: #f8fafc !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 10px 8px;
+}
+
+.ui-jqgrid tr.jqgrow td {
+  border-color: var(--border-color) !important;
+  font-size: 13px;
+  padding: 8px;
+}
+
+.ui-jqgrid tr.jqgrow:hover td {
+  background: #f0f7ff !important;
+}
+
+.ui-jqgrid .ui-jqgrid-pager {
+  background: #f8fafc !important;
+  border-color: var(--border-color) !important;
+}
