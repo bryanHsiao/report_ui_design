@@ -1,8 +1,41 @@
 # 外部法規查詢結果 — 層疊卡片式頁籤 UI
 
-> 線上展示：https://bryanhsiao.github.io/report_ui_design/
-
 根據查詢條件動態產生頁籤，以層疊卡片的視覺呈現切換不同類別的法規查詢結果。
+
+## 分支說明
+
+| 分支 | 說明 | 線上預覽 |
+|------|------|---------|
+| [`main`](https://github.com/bryanHsiao/report_ui_design/tree/main) | 完整 Demo（含 jqGrid + 假資料 100 筆） | [預覽](https://bryanhsiao.github.io/report_ui_design/) |
+| [`component`](https://github.com/bryanHsiao/report_ui_design/tree/component) | 純 UI 元件（不含 jqGrid，供工程師匯入） | [預覽](https://bryanhsiao.github.io/report_ui_design/component/) |
+
+### component 分支 — 工程師整合用
+
+抽離出純 UI 外皮，**不包含 jqGrid**，原系統已有 jqGrid 模組的情況下直接匯入使用。
+
+```
+component/
+  css/report-tabs.css   — 樣式（--rt- 前綴避免衝突）
+  js/report-tabs.js     — 頁籤切換邏輯（提供 callback hook）
+  index.html            — 預覽頁
+  README.md             — API 文件 & 使用說明
+```
+
+工程師只需引入 2 個檔案，在 `onTabSwitch` callback 中初始化自己的 jqGrid：
+
+```javascript
+ReportTabs.init({
+  tabBarEl: "#tab-bar",
+  stackEl: "#cards-stack",
+  tabs: ["法規資料", "函釋資料", "裁罰案件"],
+  onTabSwitch: function (tabName, $card, gridId, pagerId) {
+    // 在此初始化你的 jqGrid 或撈取 API 資料
+    ReportTabs.markLoaded(tabName); // 載入完成後呼叫
+  }
+});
+```
+
+> 詳細 API 文件請參考 [`component/README.md`](https://github.com/bryanHsiao/report_ui_design/blob/component/component/README.md)
 
 ---
 
