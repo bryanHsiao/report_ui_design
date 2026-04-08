@@ -129,3 +129,15 @@ npx serve .
 - **卡片切換動畫**：CSS `transform` + `transition`（0.45s cubic-bezier）
 - **Grid 寬高自適應**：載入後透過 `setGridWidth` / `setGridHeight` 動態設定
 - **Flexbox 佈局**：header、tab-bar、卡片區以 flex column 分配空間
+
+### 依賴版本
+
+| 套件 | 版本 | 來源 |
+|------|------|------|
+| jQuery | 3.7.1 | [cdnjs](https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js) |
+| jQuery UI | 1.13.2 | [cdnjs](https://cdnjs.cloudflare.com/ajax/libs/jquery-ui/1.13.2/jquery-ui.min.js) |
+| jQuery UI Themes | 1.12.1 (base) | [cdnjs](https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-themes/1.12.1/themes/base/jquery-ui.min.css) |
+| jqGrid | 5.8.5 | [cdnjs](https://cdnjs.cloudflare.com/ajax/libs/jqgrid/5.8.5/js/jquery.jqGrid.min.js) |
+| jqGrid i18n | 5.8.5 (zh-TW) | [cdnjs](https://cdnjs.cloudflare.com/ajax/libs/jqgrid/5.8.5/js/i18n/grid.locale-tw.min.js) |
+
+> component 分支的純 UI 元件僅依賴 jQuery，不需要 jqGrid。
